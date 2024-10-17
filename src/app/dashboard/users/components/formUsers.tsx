@@ -5,9 +5,14 @@ import { FormContainer } from "~/components/globals/formContainer";
 import { InputField } from "~/components/globals/inputField";
 import { formSchemaCreateUser } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { trpc } from "~/utils/trpc";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function FormUsers() {
-  const form = useForm<formSchemaCreateUser>({
+  const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
+  const methods = useForm<formSchemaCreateUser>({
     defaultValues: {
       name: "",
       email: "",
@@ -27,11 +32,14 @@ export function FormUsers() {
     resolver: zodResolver(formSchemaCreateUser),
   });
 
-  // const createUsers = api.users.create.useMutation({
-  //   onSuccess: (data) => {
-  //     return data;
-  //   },
-  // });
+  const { mutate: registerUser } = trpc.registerUser.useMutation({
+    onSettled: () => setSubmitting(false),
+    onMutate: () => setSubmitting(true),
+    onError: (error) => methods.reset({ password: "" }),
+    onSuccess: () => {
+      router.push("/dashboard/users");
+    },
+  });
 
   function onSubmit(data: formSchemaCreateUser) {
     const payload: Omit<formSchemaCreateUser, "confirmPassword"> = {
@@ -49,79 +57,79 @@ export function FormUsers() {
         country: data.address.country,
       },
     };
-    // createUsers.mutate(payload);
+    registerUser(payload);
   }
 
   return (
-    <FormContainer<formSchemaCreateUser> form={form} onSubmit={onSubmit}>
+    <FormContainer<formSchemaCreateUser> form={methods} onSubmit={onSubmit}>
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Nome"
         name="name"
         placeholder="Nome"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="e-mail"
         name="email"
         placeholder="e-mail"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Telefone"
         name="phone"
         placeholder="Telefone"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Senha"
         name="password"
         placeholder="Senha"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Confirmar Senha"
         name="confirmPassword"
         placeholder="Confirmar Senha"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Rua/Avenida"
         name="address.street"
         placeholder="Rua/Avenida"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Número"
         name="address.number"
         placeholder="Número"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Bairro"
         name="address.district"
         placeholder="Bairro"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="CEP"
         name="address.zipCode"
         placeholder="CEP"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Cidade"
         name="address.city"
         placeholder="Cidade"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="Estado"
         name="address.state"
         placeholder="Estado"
       />
       <InputField
-        control={form.control}
+        control={methods.control}
         label="País"
         name="address.country"
         placeholder="País"

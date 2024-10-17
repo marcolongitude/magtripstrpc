@@ -5,15 +5,16 @@ import jwt from "jsonwebtoken";
 import { formSchemaLogin } from "~/app/login/components/schema";
 import { formSchemaCreateUser } from "~/app/dashboard/users/components/schema";
 import { cookies } from "next/headers";
+import { schemaCreateUserInput } from "./schemas/users";
 
 export const registerHandler = async ({
   input,
 }: {
-  input: formSchemaCreateUser;
+  input: schemaCreateUserInput;
 }) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12);
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: input.email,
         name: input.name,
@@ -33,12 +34,9 @@ export const registerHandler = async ({
       },
     });
 
-    const { password, ...userWithoutPassword } = user;
     return {
       status: "success",
-      data: {
-        user: userWithoutPassword,
-      },
+      code: "CREATED",
     };
   } catch (error: any) {
     if (error.code === "P2002") {
@@ -48,6 +46,11 @@ export const registerHandler = async ({
       });
     }
   }
+
+  throw new TRPCError({
+    code: "INTERNAL_SERVER_ERROR",
+    message: "Ocorreu um erro durante o registro.",
+  });
 };
 
 export const loginHandler = async ({ input }: { input: formSchemaLogin }) => {

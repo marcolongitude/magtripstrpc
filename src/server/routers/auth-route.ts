@@ -10,15 +10,24 @@ import {
   publicProcedure,
   t,
 } from "../../utils/trpc-server";
+import { z } from "zod";
+import { schemaCreateUserInput } from "./schemas/users";
 
 const authRouter = t.router({
   registerUser: publicProcedure
-    .input(formSchemaCreateUser)
-    .mutation(({ input }: { input: formSchemaCreateUser }) =>
+    .output(
+      z.object({
+        status: z.string(),
+        code: z.string(),
+      }),
+    )
+    .input(schemaCreateUserInput)
+    .mutation(({ input }: { input: schemaCreateUserInput }) =>
       registerHandler({ input }),
     ),
 
   loginUser: publicProcedure
+    .output(z.object({ token: z.string(), status: z.string() }))
     .input(formSchemaLogin)
     .mutation(({ input }: { input: formSchemaLogin }) =>
       loginHandler({ input }),

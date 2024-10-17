@@ -1,7 +1,7 @@
 import authRouter from "~/server/routers/auth-route";
 import { getUserHandler } from "~/server/routers/user-controller";
 import { createContext } from "~/utils/trpc-context";
-import { protectedProcedure, publicProcedure, t } from "~/utils/trpc-server";
+import { protectedProcedure, t } from "~/utils/trpc-server";
 
 const statusCheckRouter = t.router({
   statuschecker: t.procedure.query(() => {
