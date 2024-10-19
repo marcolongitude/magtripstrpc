@@ -1,4 +1,6 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { notFound, useRouter } from "next/navigation";
 import { TextInLine } from "~/components/globals/textBody";
 import { Button } from "~/components/ui/button";
 import { trpc } from "~/utils/trpc";
@@ -6,6 +8,7 @@ import React from "react";
 import { ModalDelete } from "../../../components/globals/modalDelete";
 
 export function ListUsers() {
+  const router = useRouter();
   const [openModalDeleteUser, setOpenModalDeleteUser] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState<string | null>(
     null,
@@ -88,7 +91,11 @@ export function ListUsers() {
               />
             </div>
             <div className="flex items-center justify-end gap-4">
-              <Button size="sm" variant="secondary">
+              <Button
+                onClick={() => router.push(`/dashboard/users/edit/${user.id}`)}
+                size="sm"
+                variant="secondary"
+              >
                 Editar
               </Button>
               <Button

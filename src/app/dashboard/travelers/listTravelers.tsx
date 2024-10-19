@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React from "react";
 import { ModalDelete } from "~/components/globals/modalDelete";
 import { TextInLine } from "~/components/globals/textBody";
@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { trpc } from "~/utils/trpc";
 
 export function ListTravelers() {
+  const router = useRouter();
   const [openModalDeleteTraveler, setOpenModalDeleteTraveler] =
     React.useState(false);
   const [selectedTravelerId, setSelectedTravelerId] = React.useState<
@@ -80,7 +81,13 @@ export function ListTravelers() {
               />
             </div>
             <div className="flex items-center justify-end gap-4">
-              <Button size="sm" variant="secondary" onClick={() => {}}>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() =>
+                  router.push(`/dashboard/travelers/edit/${traveler.id}`)
+                }
+              >
                 Editar
               </Button>
               <Button
