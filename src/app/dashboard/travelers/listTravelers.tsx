@@ -1,20 +1,52 @@
 import { notFound } from "next/navigation";
+import React from "react";
+import { ModalDelete } from "~/components/globals/modalDelete";
 import { TextInLine } from "~/components/globals/textBody";
 import { Button } from "~/components/ui/button";
 import { trpc } from "~/utils/trpc";
 
 export function ListTravelers() {
+  const [openModalDeleteTraveler, setOpenModalDeleteTraveler] =
+    React.useState(false);
+  const [selectedTravelerId, setSelectedTravelerId] = React.useState<
+    string | null
+  >(null);
   const {
     data: ListTravelers,
     isLoading,
     isError,
     error,
+    refetch: listUsersRefetch,
   } = trpc.getAllTravelers.useQuery(undefined, {
     suspense: true,
   });
 
   if (!ListTravelers) {
     return notFound();
+  }
+
+  const { mutate: deleteTraveler } = trpc.deleteTraveler.useMutation({
+    onSuccess: () => {
+      listUsersRefetch();
+    },
+    onError: (error) => {},
+    onSettled: () => {
+      setOpenModalDeleteTraveler(false);
+    },
+    onMutate: () => {
+      setOpenModalDeleteTraveler(true);
+    },
+  });
+
+  function handleModalDeleteTraveler(travelerId: string) {
+    setSelectedTravelerId(travelerId);
+    setOpenModalDeleteTraveler(true);
+  }
+
+  function deleteTravelerModal() {
+    if (selectedTravelerId) {
+      deleteTraveler({ id: selectedTravelerId });
+    }
   }
 
   return (
@@ -51,12 +83,21 @@ export function ListTravelers() {
               <Button size="sm" variant="secondary" onClick={() => {}}>
                 Editar
               </Button>
-              <Button size="sm" variant="secondary" onClick={() => {}}>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => handleModalDeleteTraveler(traveler.id)}
+              >
                 Deletar
               </Button>
             </div>
           </div>
         ))}
+      <ModalDelete
+        openModalDelete={openModalDeleteTraveler}
+        setOpenModalDelete={setOpenModalDeleteTraveler}
+        onConfirmDelete={deleteTravelerModal}
+      />
     </div>
   );
 }

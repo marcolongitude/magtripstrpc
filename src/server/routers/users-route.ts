@@ -4,8 +4,15 @@ import {
   publicProcedure,
   t,
 } from "../../utils/trpc-server";
-import { getAllUsersHandler } from "../controllers/user-controller";
-import { schemaCreateUserInput, schemaGetUserInput } from "../schemas/users";
+import {
+  deleteUserhandler,
+  getAllUsersHandler,
+} from "../controllers/user-controller";
+import {
+  schemaCreateUserInput,
+  schemaDeleteUserInput,
+  schemaGetUserInput,
+} from "../schemas/users";
 
 export const usersRouter = t.router({
   getAllUsers: protectedProcedure
@@ -16,4 +23,12 @@ export const usersRouter = t.router({
       }),
     )
     .query(() => getAllUsersHandler()),
+  deleteUser: protectedProcedure
+    .output(
+      z.object({
+        status: z.string(),
+      }),
+    )
+    .input(schemaDeleteUserInput)
+    .mutation(({ input }) => deleteUserhandler({ input })),
 });

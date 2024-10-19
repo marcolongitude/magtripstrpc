@@ -1,5 +1,8 @@
 import { TRPCError } from "@trpc/server";
-import { schemaCreateTravelersInput } from "../schemas/travelers";
+import {
+  schemaCreateTravelersInput,
+  schemaDeleteTravelersInput,
+} from "../schemas/travelers";
 import { prisma } from "~/lib/prisma";
 
 export const createTravelersHandler = async ({
@@ -62,6 +65,28 @@ export const getAllTravelersHandler = async () => {
     return {
       status: "success",
       data: travelersWithoutAddressId,
+    };
+  } catch (error: any) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: error.message,
+    });
+  }
+};
+
+export const deleteTravelersHandler = async ({
+  input,
+}: {
+  input: schemaDeleteTravelersInput;
+}) => {
+  try {
+    await prisma.travelers.delete({
+      where: {
+        id: input.id,
+      },
+    });
+    return {
+      status: "success",
     };
   } catch (error: any) {
     throw new TRPCError({

@@ -1,4 +1,3 @@
-import { formSchemaCreateUser } from "~/app/dashboard/users/add/components/schema";
 import { formSchemaLogin } from "~/app/login/components/schema";
 import {
   loginHandler,

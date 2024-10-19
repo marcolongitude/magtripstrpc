@@ -20,6 +20,7 @@ export type schemaCreateTravelersInput = z.infer<
 >;
 
 export const schemaGetTravelersInput = z.object({
+  id: z.string().min(1, { message: "Por favor, insira um ID." }),
   name: z.string().min(1, { message: "Por favor, insira um nome." }),
   email: z.string().email({ message: "Por favor, insira um e-mail válido." }),
   phone: z.string().min(1, { message: "Por favor, insira um telefone." }),
@@ -37,3 +38,11 @@ export const schemaGetTravelersInput = z.object({
 });
 
 export type schemaGetTravelersInput = z.infer<typeof schemaGetTravelersInput>;
+
+export const schemaDeleteTravelersInput = z.object({
+  id: z.string().min(1, { message: "Por favor, insira um ID." }),
+});
+
+export type schemaDeleteTravelersInput = z.infer<
+  typeof schemaDeleteTravelersInput
+>;

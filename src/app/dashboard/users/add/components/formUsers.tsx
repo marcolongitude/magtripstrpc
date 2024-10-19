@@ -8,9 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "~/utils/trpc";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useErrorBoundary, ErrorBoundary } from "react-error-boundary";
 
 export function FormUsers() {
   const [submitting, setSubmitting] = useState(false);
+  const { showBoundary } = useErrorBoundary();
+  console.log("show boundary", showBoundary);
   const router = useRouter();
   const methods = useForm<formSchemaCreateUser>({
     defaultValues: {
@@ -35,7 +38,10 @@ export function FormUsers() {
   const { mutate: registerUser } = trpc.registerUser.useMutation({
     onSettled: () => setSubmitting(false),
     onMutate: () => setSubmitting(true),
-    onError: (error) => methods.reset({ password: "" }),
+    onError: (error) => {
+      methods.reset({ password: "" });
+      console.log("error on error", error);
+    },
     onSuccess: () => {
       router.push("/dashboard/users");
     },

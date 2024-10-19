@@ -4,6 +4,7 @@ import { Container } from "~/components/globals/container";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ListTravelers } from "./listTravelers";
+import ErrorBoundary from "./error";
 
 export default function TravelersPage() {
   const router = useRouter();
@@ -17,7 +18,9 @@ export default function TravelersPage() {
           Adicionar viajantes
         </Button>
       </div>
-      <ListTravelers />
+      <ErrorBoundary>
+        <ListTravelers />
+      </ErrorBoundary>
     </Container>
   );
 }

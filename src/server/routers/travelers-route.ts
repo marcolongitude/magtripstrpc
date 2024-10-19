@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { protectedProcedure, t } from "../../utils/trpc-server";
-import { schemaCreateUserInput } from "../schemas/users";
 import {
   schemaCreateTravelersInput,
+  schemaDeleteTravelersInput,
   schemaGetTravelersInput,
 } from "../schemas/travelers";
 import {
   createTravelersHandler,
+  deleteTravelersHandler,
   getAllTravelersHandler,
 } from "../controllers/travelers-controller";
 
@@ -30,4 +31,14 @@ export const travelersRouter = t.router({
       }),
     )
     .query(() => getAllTravelersHandler()),
+  deleteTraveler: protectedProcedure
+    .output(
+      z.object({
+        status: z.string(),
+      }),
+    )
+    .input(schemaDeleteTravelersInput)
+    .mutation(({ input }: { input: schemaDeleteTravelersInput }) =>
+      deleteTravelersHandler({ input }),
+    ),
 });
