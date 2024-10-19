@@ -1,20 +1,20 @@
-import { formSchemaCreateUser } from "~/app/dashboard/users/components/schema";
+import { formSchemaCreateUser } from "~/app/dashboard/users/add/components/schema";
 import { formSchemaLogin } from "~/app/login/components/schema";
 import {
   loginHandler,
   logoutHandler,
   registerHandler,
-} from "./auth-controller";
+} from "../controllers/auth-controller";
 import {
   protectedProcedure,
   publicProcedure,
   t,
 } from "../../utils/trpc-server";
 import { z } from "zod";
-import { schemaCreateUserInput } from "./schemas/users";
+import { schemaCreateUserInput } from "../schemas/users";
 
 const authRouter = t.router({
-  registerUser: publicProcedure
+  registerUser: protectedProcedure
     .output(
       z.object({
         status: z.string(),

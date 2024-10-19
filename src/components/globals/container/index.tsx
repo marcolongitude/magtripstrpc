@@ -7,7 +7,7 @@ type ContainerProps = {
 
 export function Container({ children, title }: ContainerProps) {
   return (
-    <div className="m-20 flex h-full flex-col gap-12">
+    <div className="m-12 flex h-full flex-col gap-8">
       <TitlePage title={title} />
       {children}
     </div>

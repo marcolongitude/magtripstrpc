@@ -1,4 +1,5 @@
 import { ArrowBigLeft, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
@@ -14,6 +15,7 @@ export function FormContainer<T extends FieldValues>({
   form,
   onSubmit,
 }: FormContainerProps<T>) {
+  const router = useRouter();
   return (
     <div className="mx-5 max-w-full rounded-lg border border-gray-300 p-8">
       <Form {...form}>
@@ -22,7 +24,11 @@ export function FormContainer<T extends FieldValues>({
             {children}
           </div>
           <div className="mt-6 flex h-full flex-row justify-end gap-8">
-            <Button variant="secondary" type="submit">
+            <Button
+              variant="secondary"
+              type="submit"
+              onClick={() => router.back()}
+            >
               <ArrowBigLeft size="20" className="mr-4" /> Cancelar
             </Button>
             <Button type="submit">

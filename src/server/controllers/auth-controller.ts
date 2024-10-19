@@ -3,9 +3,8 @@ import { prisma } from "~/lib/prisma";
 import { TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
 import { formSchemaLogin } from "~/app/login/components/schema";
-import { formSchemaCreateUser } from "~/app/dashboard/users/components/schema";
 import { cookies } from "next/headers";
-import { schemaCreateUserInput } from "./schemas/users";
+import { schemaCreateUserInput } from "../schemas/users";
 
 export const registerHandler = async ({
   input,
@@ -14,6 +13,7 @@ export const registerHandler = async ({
 }) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12);
+
     await prisma.user.create({
       data: {
         email: input.email,

@@ -1,8 +1,8 @@
-import { formSchema } from "~/app/dashboard/users/components/schema";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "~/lib/prisma";
+import { schemaCreateUserInput } from "../schemas/users";
 
-export async function createusers(data: Omit<formSchema, "confirmPassword">) {
+export async function createusers(data: schemaCreateUserInput) {
   try {
     const newUser = await prisma.user.create({
       data: {

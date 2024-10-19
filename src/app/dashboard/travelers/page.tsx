@@ -1,24 +1,23 @@
 "use client";
 
 import { Container } from "~/components/globals/container";
-import { FormUsers } from "./add/components/formUsers";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ListUsers } from "./listUsers";
+import { ListTravelers } from "./listTravelers";
 
-export default function UsersPage() {
+export default function TravelersPage() {
   const router = useRouter();
   return (
-    <Container title="Usuários">
+    <Container title="Viajantes">
       <div className="flex justify-end">
         <Button
           variant={"default"}
-          onClick={() => router.push("/dashboard/users/add")}
+          onClick={() => router.push("/dashboard/travelers/add")}
         >
-          Adicionar usuário
+          Adicionar viajantes
         </Button>
       </div>
-      <ListUsers />
+      <ListTravelers />
     </Container>
   );
 }

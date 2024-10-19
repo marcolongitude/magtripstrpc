@@ -33,5 +33,15 @@ model Address {
   state    String
   country  String
   users    User[]
+  travelers Travelers[]
+}
+
+model Travelers {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String   @unique
+  phone    String
+  address  Address? @relation(fields: [addressId], references: [id])
+  addressId String? @db.ObjectId
 }
 

@@ -1,7 +1,9 @@
 import authRouter from "~/server/routers/auth-route";
-import { getUserHandler } from "~/server/routers/user-controller";
+import { getUserHandler } from "~/server/controllers/user-controller";
 import { createContext } from "~/utils/trpc-context";
 import { protectedProcedure, t } from "~/utils/trpc-server";
+import { usersRouter } from "~/server/routers/users-route";
+import { travelersRouter } from "~/server/routers/travelers-route";
 
 const statusCheckRouter = t.router({
   statuschecker: t.procedure.query(() => {
@@ -20,6 +22,8 @@ export const appRouter = t.mergeRouters(
   statusCheckRouter,
   authRouter,
   userRouter,
+  usersRouter,
+  travelersRouter,
 );
 
 export const createCaller = t.createCallerFactory(appRouter);
