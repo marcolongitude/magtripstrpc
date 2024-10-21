@@ -1,22 +1,17 @@
-"use client";
-
 import { Container } from "~/components/globals/container";
-import { Button } from "~/components/ui/button";
-import { useRouter } from "next/navigation";
+
 import { ListTravelers } from "./listTravelers";
 import ErrorBoundary from "./error";
+import { ButtonRedirect } from "~/components/globals/buttonRedirect";
 
 export default function TravelersPage() {
-  const router = useRouter();
   return (
     <Container title="Viajantes">
       <div className="flex justify-end">
-        <Button
-          variant={"default"}
-          onClick={() => router.push("/dashboard/travelers/add")}
-        >
-          Adicionar viajantes
-        </Button>
+        <ButtonRedirect
+          label="Adicionar viajantes"
+          route="/dashboard/travelers/add"
+        />
       </div>
       <ErrorBoundary>
         <ListTravelers />

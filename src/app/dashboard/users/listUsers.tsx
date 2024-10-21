@@ -1,62 +1,26 @@
 "use client";
 
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { TextInLine } from "~/components/globals/textBody";
 import { Button } from "~/components/ui/button";
-import { trpc } from "~/utils/trpc";
+
 import React from "react";
 import { ModalDelete } from "../../../components/globals/modalDelete";
+import { useUsersFunctions } from "./hooks";
+import { ButtonRedirect } from "~/components/globals/buttonRedirect";
 
 export function ListUsers() {
-  const router = useRouter();
-  const [openModalDeleteUser, setOpenModalDeleteUser] = React.useState(false);
-  const [selectedUserId, setSelectedUserId] = React.useState<string | null>(
-    null,
-  );
   const {
-    data: listUsers,
+    handleModalDeleteUser,
+    openModalDeleteUser,
+    setOpenModalDeleteUser,
+    listUsers,
     isLoading,
-    isError,
-    error,
-    refetch: listUsersRefetch,
-  } = trpc.getAllUsers.useQuery(undefined, {
-    trpc: {
-      context: {
-        deserializeUser: true,
-      },
-    },
-    suspense: true,
-  });
+    deleteUserModal,
+  } = useUsersFunctions();
 
   if (!listUsers) {
     return notFound();
-  }
-
-  const { mutate: deleteUser } = trpc.deleteUser.useMutation({
-    onSuccess: async () => {
-      setOpenModalDeleteUser(false);
-      listUsersRefetch();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    onSettled: () => {
-      setSelectedUserId(null);
-    },
-    onMutate: () => {
-      setSelectedUserId(null);
-    },
-  });
-
-  function handleModalDeleteUser(userId: string) {
-    setSelectedUserId(userId);
-    setOpenModalDeleteUser(true);
-  }
-
-  function deleteUserModal() {
-    if (selectedUserId) {
-      deleteUser({ id: selectedUserId });
-    }
   }
 
   return (
@@ -91,13 +55,10 @@ export function ListUsers() {
               />
             </div>
             <div className="flex items-center justify-end gap-4">
-              <Button
-                onClick={() => router.push(`/dashboard/users/edit/${user.id}`)}
-                size="sm"
-                variant="secondary"
-              >
-                Editar
-              </Button>
+              <ButtonRedirect
+                route={`/dashboard/users/edit/${user.id}`}
+                label="Editar"
+              />
               <Button
                 onClick={() => handleModalDeleteUser(user.id)}
                 size="sm"

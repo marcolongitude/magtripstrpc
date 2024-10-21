@@ -1,53 +1,25 @@
-import { notFound, useRouter } from "next/navigation";
+"use client";
+
+import { notFound } from "next/navigation";
 import React from "react";
+import { ButtonRedirect } from "~/components/globals/buttonRedirect";
 import { ModalDelete } from "~/components/globals/modalDelete";
 import { TextInLine } from "~/components/globals/textBody";
 import { Button } from "~/components/ui/button";
-import { trpc } from "~/utils/trpc";
+import { useTravelersFunctions } from "./hooks";
 
 export function ListTravelers() {
-  const router = useRouter();
-  const [openModalDeleteTraveler, setOpenModalDeleteTraveler] =
-    React.useState(false);
-  const [selectedTravelerId, setSelectedTravelerId] = React.useState<
-    string | null
-  >(null);
   const {
-    data: ListTravelers,
+    handleModalDeleteTraveler,
+    openModalDeleteTraveler,
+    setOpenModalDeleteTraveler,
+    deleteTravelerModal,
+    ListTravelers,
     isLoading,
-    isError,
-    error,
-    refetch: listUsersRefetch,
-  } = trpc.getAllTravelers.useQuery(undefined, {
-    suspense: true,
-  });
+  } = useTravelersFunctions();
 
   if (!ListTravelers) {
     return notFound();
-  }
-
-  const { mutate: deleteTraveler } = trpc.deleteTraveler.useMutation({
-    onSuccess: () => {
-      listUsersRefetch();
-    },
-    onError: (error) => {},
-    onSettled: () => {
-      setOpenModalDeleteTraveler(false);
-    },
-    onMutate: () => {
-      setOpenModalDeleteTraveler(true);
-    },
-  });
-
-  function handleModalDeleteTraveler(travelerId: string) {
-    setSelectedTravelerId(travelerId);
-    setOpenModalDeleteTraveler(true);
-  }
-
-  function deleteTravelerModal() {
-    if (selectedTravelerId) {
-      deleteTraveler({ id: selectedTravelerId });
-    }
   }
 
   return (
@@ -81,15 +53,12 @@ export function ListTravelers() {
               />
             </div>
             <div className="flex items-center justify-end gap-4">
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() =>
-                  router.push(`/dashboard/travelers/edit/${traveler.id}`)
-                }
-              >
-                Editar
-              </Button>
+              <ButtonRedirect
+                label="Editar"
+                route={`/dashboard/travelers/edit/${traveler.id}`}
+                size={"sm"}
+                variant={"secondary"}
+              />
               <Button
                 size="sm"
                 variant="secondary"
