@@ -15,10 +15,11 @@ type FormTravelersProps = {
 
 export function FormUsers({ traveler }: FormTravelersProps) {
   const [submitting, setSubmitting] = useState(false);
+  console.log("traveler", submitting);
   const router = useRouter();
   const methods = useForm<formSchemaEditUser>({
     defaultValues: {
-      name: traveler.name || "",
+      name: traveler.name ?? "",
       email: traveler.email,
       phone: traveler.phone,
       address: {
@@ -45,7 +46,7 @@ export function FormUsers({ traveler }: FormTravelersProps) {
 
   function onSubmit(data: formSchemaEditUser) {
     const payload: formSchemaEditUser = {
-      id: traveler.id || "",
+      id: traveler.id ?? "",
       name: data.name,
       email: data.email,
       phone: data.phone,

@@ -1,3 +1,4 @@
+import { type Control, type FieldValues, type Path } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -7,14 +8,19 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 
-type InputProps = {
-  name: string;
+type InputProps<T extends FieldValues> = {
+  name: Path<T>;
   placeholder: string;
   label: string;
-  control: any;
+  control: Control<T>;
 };
 
-export function InputField({ control, name, placeholder, label }: InputProps) {
+export function InputField<T extends FieldValues>({
+  control,
+  name,
+  placeholder,
+  label,
+}: InputProps<T>) {
   return (
     <FormField
       control={control}

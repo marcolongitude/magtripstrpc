@@ -2,7 +2,7 @@
 
 import { FormContainer } from "~/components/globals/formContainer";
 import { InputField } from "~/components/globals/inputField";
-import { formSchemaCreateTraveler } from "./schema";
+import { type formSchemaCreateTraveler } from "./schema";
 
 import { useAddTravelersFunctions } from "./hooks";
 

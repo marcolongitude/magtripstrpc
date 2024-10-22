@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Form } from "~/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "~/components/ui/button";
@@ -13,6 +13,7 @@ import { useState } from "react";
 
 export function FormLogin() {
   const [submitting, setSubmitting] = useState(false);
+  console.log(submitting);
   const router = useRouter();
   const methods = useForm({
     defaultValues: {
@@ -25,7 +26,7 @@ export function FormLogin() {
   const { mutate: loginFn } = trpc.loginUser.useMutation({
     onSettled: () => setSubmitting(false),
     onMutate: () => setSubmitting(true),
-    onError: (error) => methods.reset({ password: "" }),
+    onError: () => methods.reset({ password: "" }),
     onSuccess: () => {
       router.push("/dashboard/users");
     },

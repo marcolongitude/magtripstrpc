@@ -2,9 +2,10 @@ import bcrypt from "bcryptjs";
 import { prisma } from "~/lib/prisma";
 import { TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
-import { formSchemaLogin } from "~/app/login/components/schema";
+import { type formSchemaLogin } from "~/app/login/components/schema";
 import { cookies } from "next/headers";
-import { schemaCreateUserInput } from "../schemas/users";
+import { type schemaCreateUserInput } from "../schemas/users";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const registerHandler = async ({
   input,
@@ -38,12 +39,14 @@ export const registerHandler = async ({
       status: "success",
       code: "CREATED",
     };
-  } catch (error: any) {
-    if (error.code === "P2002") {
-      throw new TRPCError({
-        code: "CONFLICT",
-        message: "Email ja existente.",
-      });
+  } catch (error: unknown) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Email ja existente.",
+        });
+      }
     }
   }
 
@@ -78,22 +81,22 @@ export const loginHandler = async ({ input }: { input: formSchemaLogin }) => {
       path: "/",
     };
 
-    cookies().set("token", token, cookieOptions);
+    (await cookies()).set("token", token, cookieOptions);
 
     return {
       status: "success",
       token,
     };
-  } catch (error: any) {
-    throw new error();
+  } catch (error: unknown) {
+    throw error;
   }
 };
 
 export const logoutHandler = async () => {
   try {
-    cookies().set("token", "", { maxAge: -1 });
+    (await cookies()).set("token", "", { maxAge: -1 });
     return { status: "success" };
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw error;
   }
 };

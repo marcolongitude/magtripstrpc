@@ -25,7 +25,6 @@ export function ListTravelers() {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {!isLoading &&
-        ListTravelers &&
         ListTravelers.data.map((traveler) => (
           <div
             key={traveler.email}
@@ -37,19 +36,19 @@ export function ListTravelers() {
               <TextInLine title={"Telefone: "} value={traveler.phone} />
               <TextInLine
                 title={"Rua: "}
-                value={traveler.address?.street || "Não informado"}
+                value={traveler.address?.street ?? "Não informado"}
               />
               <TextInLine
                 title={"Número: "}
-                value={traveler.address?.number || "Não informado"}
+                value={traveler.address?.number ?? "Não informado"}
               />
               <TextInLine
                 title={"Bairro: "}
-                value={traveler.address?.district || "Não informado"}
+                value={traveler.address?.district ?? "Não informado"}
               />
               <TextInLine
                 title={"Cidade: "}
-                value={traveler.address?.city || "Não informado"}
+                value={traveler.address?.city ?? "Não informado"}
               />
             </div>
             <div className="flex items-center justify-end gap-4">

@@ -17,13 +17,14 @@ export function useTravelersEditFunctions({ traveler }: Props) {
     onMutate: () => setSubmitting(true),
     onError: (error) => console.error(error),
     onSuccess: () => {
+      setSubmitting(false);
       router.push("/dashboard/travelers");
     },
   });
 
   const methods = useForm<formSchemaEditTraveler>({
     defaultValues: {
-      name: traveler.name || "",
+      name: traveler.name ?? "",
       email: traveler.email,
       phone: traveler.phone,
       address: {
@@ -41,7 +42,7 @@ export function useTravelersEditFunctions({ traveler }: Props) {
 
   function onSubmit(data: formSchemaEditTraveler) {
     const payload: formSchemaEditTraveler = {
-      id: traveler.id || "",
+      id: traveler.id ?? "",
       name: data.name,
       email: data.email,
       phone: data.phone,
@@ -62,5 +63,6 @@ export function useTravelersEditFunctions({ traveler }: Props) {
     editTraveler,
     methods,
     onSubmit,
+    submitting,
   };
 }

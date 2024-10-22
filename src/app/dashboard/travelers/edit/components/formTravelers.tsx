@@ -2,9 +2,8 @@
 
 import { FormContainer } from "~/components/globals/formContainer";
 import { InputField } from "~/components/globals/inputField";
-import { formSchemaEditTraveler } from "./schema";
+import { type formSchemaEditTraveler } from "./schema";
 
-import { useState } from "react";
 import { useTravelersEditFunctions } from "./hooks";
 
 type FormTravelersProps = {
@@ -12,7 +11,7 @@ type FormTravelersProps = {
 };
 
 export function FormTravelers({ traveler }: FormTravelersProps) {
-  const { editTraveler, methods, onSubmit } = useTravelersEditFunctions({
+  const { methods, onSubmit } = useTravelersEditFunctions({
     traveler,
   });
 

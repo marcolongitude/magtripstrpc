@@ -8,12 +8,12 @@ import { Container } from "~/components/globals/container";
 export default function EditTravelerPage() {
   const { id } = useParams();
 
-  if (!id || Array.isArray(id)) return null;
+  if (Array.isArray(id) || !id) return null;
   const { data: user } = trpc.getUserByid.useQuery({ id });
 
   return (
     <Container title="Editar usuários">
-      {user && user.data && <FormUsers traveler={user?.data} />}
+      {user?.data && <FormUsers traveler={user?.data} />}
     </Container>
   );
 }

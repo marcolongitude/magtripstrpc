@@ -8,12 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "~/utils/trpc";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useErrorBoundary, ErrorBoundary } from "react-error-boundary";
 
 export function FormUsers() {
   const [submitting, setSubmitting] = useState(false);
-  const { showBoundary } = useErrorBoundary();
-  console.log("show boundary", showBoundary);
+  console.log("show boundary", submitting);
   const router = useRouter();
   const methods = useForm<formSchemaCreateUser>({
     defaultValues: {

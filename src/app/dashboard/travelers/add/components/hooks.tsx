@@ -57,5 +57,6 @@ export function useAddTravelersFunctions() {
     registerUser,
     methods,
     onSubmit,
+    submitting,
   };
 }

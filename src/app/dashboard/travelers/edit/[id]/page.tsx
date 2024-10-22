@@ -13,7 +13,7 @@ export default function EditTravelerPage() {
 
   return (
     <Container title="Editar viajante">
-      {traveler && traveler.data && <FormTravelers traveler={traveler?.data} />}
+      {traveler?.data && <FormTravelers traveler={traveler?.data} />}
     </Container>
   );
 }

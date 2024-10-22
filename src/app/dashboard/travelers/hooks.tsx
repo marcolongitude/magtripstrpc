@@ -16,18 +16,18 @@ export function useTravelersFunctions() {
   const {
     data: ListTravelers,
     isLoading,
-    isError,
-    error,
     refetch: listUsersRefetch,
   } = trpc.getAllTravelers.useQuery(undefined, {
     suspense: true,
   });
 
   const { mutate: deleteTraveler } = trpc.deleteTraveler.useMutation({
-    onSuccess: () => {
-      listUsersRefetch();
+    onSuccess: async () => {
+      await listUsersRefetch();
     },
-    onError: (error) => {},
+    onError: (error) => {
+      console.log(error);
+    },
     onSettled: () => {
       setOpenModalDeleteTraveler(false);
     },

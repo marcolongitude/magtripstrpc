@@ -1,4 +1,3 @@
-import { HydrateClient } from "~/trpc/server";
 import { FormLogin } from "./components/formLogin";
 
 export default function LoginPage() {

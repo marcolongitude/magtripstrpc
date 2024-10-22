@@ -15,8 +15,6 @@ export function useUsersFunctions() {
   const {
     data: listUsers,
     isLoading,
-    isError,
-    error,
     refetch: listUsersRefetch,
   } = trpc.getAllUsers.useQuery(undefined, {
     trpc: {
@@ -30,7 +28,7 @@ export function useUsersFunctions() {
   const { mutate: deleteUser } = trpc.deleteUser.useMutation({
     onSuccess: async () => {
       setOpenModalDeleteUser(false);
-      listUsersRefetch();
+      await listUsersRefetch();
     },
     onError: (error) => {
       console.log(error);

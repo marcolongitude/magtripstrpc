@@ -1,6 +1,6 @@
 import { ArrowBigLeft, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { type FieldValues, type UseFormReturn } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 

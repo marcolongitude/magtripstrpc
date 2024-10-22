@@ -4,7 +4,7 @@ import { prisma } from "~/lib/prisma";
 import { cookies } from "next/headers";
 
 export const deserializeUser = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   try {
     let token;
